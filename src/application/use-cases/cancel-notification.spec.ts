@@ -1,5 +1,4 @@
-import { Content } from '@application/entities/content';
-import { Notification } from '@application/entities/notification';
+import { makeNotification } from '@test/factories/notification-factory';
 import { randomUUID } from 'node:crypto';
 import { InMemoryNotificationRepository } from '../../../test/repositories/in-memory-notifications-repository';
 import { CancelNotification } from './cancel-notification';
@@ -9,11 +8,7 @@ describe('Send Notification', () => {
   it('should be able to cancel notification', async () => {
     const inMemoryNotificationRepository = new InMemoryNotificationRepository();
 
-    const notification = new Notification({
-      recipientId: randomUUID(),
-      content: new Content('Some content'),
-      category: 'social',
-    });
+    const notification = makeNotification();
 
     await inMemoryNotificationRepository.create(notification);
 

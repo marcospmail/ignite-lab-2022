@@ -30,9 +30,13 @@ export class InMemoryNotificationRepository extends NotificationRepository {
 
   countManyByRecipientId(recipientId: any): Promise<number> {
     return Promise.resolve(
-      this.notifications.filter(
-        (notification) => notification.recipientId === recipientId,
-      ).length,
+      this.notifications.filter((v) => v.recipientId === recipientId).length,
+    );
+  }
+
+  findManyByRecipientId(recipientId: any): Promise<Notification[]> {
+    return Promise.resolve(
+      this.notifications.filter((v) => v.recipientId === recipientId),
     );
   }
 }

@@ -3,11 +3,12 @@ import { Notification } from '@application/entities/notification';
 import { randomUUID } from 'crypto';
 import { InMemoryNotificationRepository } from '../../../test/repositories/in-memory-notifications-repository';
 import { CountRecipientNotifications } from './count-recipient-notification';
+import { makeNotification } from '@test/factories/notification-factory';
 
 describe('Count Recipient Notifications', () => {
   it('should be able to count the recipient notifications', async () => {
     const inMemoryNotificationRepository = new InMemoryNotificationRepository();
-    const sendNotification = new CountRecipientNotifications(
+    const countRecipientNotifications = new CountRecipientNotifications(
       inMemoryNotificationRepository,
     );
 
@@ -15,30 +16,24 @@ describe('Count Recipient Notifications', () => {
     const otherRecipientId = randomUUID();
 
     inMemoryNotificationRepository.create(
-      new Notification({
+      makeNotification({
         recipientId,
-        content: new Content('Hello World'),
-        category: 'some category',
       }),
     );
 
     inMemoryNotificationRepository.create(
-      new Notification({
+      makeNotification({
         recipientId,
-        content: new Content('Hello World'),
-        category: 'some category',
       }),
     );
 
     inMemoryNotificationRepository.create(
-      new Notification({
+      makeNotification({
         recipientId: otherRecipientId,
-        content: new Content('Hello World'),
-        category: 'some category',
       }),
     );
 
-    const { count } = await sendNotification.execute({
+    const { count } = await countRecipientNotifications.execute({
       recipientId,
     });
 
